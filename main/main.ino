@@ -5,8 +5,8 @@
 #define HEATER_PIN 3
 #define TEMP_SENSOR_PIN 9
 #define DHT_TYPE DHT22
-#define MAX_TEMP_THRESHOLD 33
-#define MIN_TEMP_THRESHOLD 29.5
+#define MAX_TEMP_THRESHOLD 23.89 // 75* fahrenheit
+#define MIN_TEMP_THRESHOLD 21.11 // 70* fahrenheit
 DHT tempSensor(TEMP_SENSOR_PIN, DHT_TYPE);
 float currTemp; // current temperature
 
