@@ -33,7 +33,6 @@ void setup() {
   FastLED.setBrightness(MAX_BRIGHTNESS);
   pinMode(HEATER_PIN, OUTPUT);
   pinMode(TEST_LED, OUTPUT);
-  // Serial.begin(9600);
 
   cli(); // stop interrupts
  
@@ -111,21 +110,23 @@ void displayWave() {
 
   for (int j = 1; j < 65; j++) {
     for (int i = 0; i < RGB_COUNT; i++) {
-      rgbLeds[i] = CHSV(i + 115 + (j*1.3), MAX_BRIGHTNESS, SATURATION); /* The higher the value 4 the less fade there is and vice versa */ 
-    } //i - (j * 2)
+      rgbLeds[i] = CHSV(i + 115 + (j*1.3), MAX_BRIGHTNESS, SATURATION);
+    }
     FastLED.show();
-    delay(75); /* Change this to your hearts desire, the lower the value the faster your colors move (and vice versa) */
+    delay(75);
+  }
+  
+  if (digitalRead(HEATER_PIN)) {
+    return;
   }
 
   for (int j = 65; j >= 1; j--) {
     for (int i = RGB_COUNT; i >= 0; i--) {
-      rgbLeds[i] = CHSV(i + 115 + (j*1.3), MAX_BRIGHTNESS, SATURATION); /* The higher the value 4 the less fade there is and vice versa */ 
-    } //i - (j * 2)
+      rgbLeds[i] = CHSV(i + 115 + (j*1.3), MAX_BRIGHTNESS, SATURATION);
+    }
     FastLED.show();
-    delay(75); /* Change this to your hearts desire, the lower the value the faster your colors move (and vice versa) */
+    delay(75);
   }
-
-  
 }
 
 void setSameColorAndDisplay(int red, int green, int blue) {
@@ -153,8 +154,6 @@ void loop() {
   }
 
   // heater is off
-
   displayWave();
-  //setSameColorAndDisplay(r,g,b);
   
 }
