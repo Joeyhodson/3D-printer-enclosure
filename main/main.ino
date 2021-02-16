@@ -14,8 +14,8 @@ float currTemp; // current temperature
 #define RGB_PIN 6
 #define RGB_TYPE WS2812B
 #define RGB_ORDER GRB
-#define RGB_COUNT 60
-#define MAX_BRIGHTNESS 255
+#define RGB_COUNT 96
+#define MAX_BRIGHTNESS 225
 #define MIN_BRIGHTNESS 50
 #define SATURATION 255
 CRGB rgbLeds[RGB_COUNT];
