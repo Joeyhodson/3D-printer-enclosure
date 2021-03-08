@@ -5,10 +5,10 @@
 #define HEATER_PIN 3
 #define TEMP_SENSOR_PIN 9
 #define DHT_TYPE DHT22
-#define MAX_TEMP_THRESHOLD 23.89 // 75* fahrenheit
-#define MIN_TEMP_THRESHOLD 21.11 // 70* fahrenheit
+#define MAX_TEMP_THRESHOLD 23.89 // 75* Fahrenheit
+#define MIN_TEMP_THRESHOLD 21.11 // 70* Fahrenheit
 DHT tempSensor(TEMP_SENSOR_PIN, DHT_TYPE);
-float currTemp; // current temperature
+float currTemp; // current enclosure temperature
 
 // lighting
 #define RGB_PIN 6
@@ -42,7 +42,7 @@ void setup() {
   TCNT1  = 0; // initialize counter value to 0
   // set compare match register for 0.25Hz increments
   OCR1A = 62499; // = (16*10^6) / (0.25*1024) - 1 (<65536 required for Timer 1 (16-bit))
-  // turn on CTC mode (continuous mode?)
+  // turn on CTC mode (up mode?)
   TCCR1B |= (1 << WGM12);
   // Set CS10 and CS12 bits for 1024 prescaler
   TCCR1B |= (1 << CS12) | (1 << CS10);  
@@ -52,7 +52,7 @@ void setup() {
   sei(); // start interrupts
 }
 
-// Timer 1 interrupt 0.25Hz reads enclosure's temp, heats if under 70* celsius
+// Timer 1 interrupt 0.25Hz reads enclosure's temp, heats if under 70* Fahrenheit
 ISR(TIMER1_COMPA_vect){
   
   tempSensor.begin();
@@ -75,7 +75,7 @@ ISR(TIMER1_COMPA_vect){
     }
   }
 
-  // if heater: ON {keep on if under desired MAX_TEMP or turn off if at desired MAX_TEMP}
+  // if heater: ON {keep on if under MAX_TEMP or turn off if at or above MAX_TEMP}
   // if heater: OFF {keep off}
   else {
 
@@ -102,6 +102,7 @@ ISR(TIMER1_COMPA_vect){
   }
 }
 
+// display a cool toned, rgb wave over WS2812bs (displayed when not heating)
 void displayWave() {
 
   if (digitalRead(HEATER_PIN)) {
@@ -129,6 +130,7 @@ void displayWave() {
   }
 }
 
+// used to indicate if the enclosure is being heated, fades leds red
 void setSameColorAndDisplay(int red, int green, int blue) {
   
   for (int i = 0; i < RGB_COUNT; i++) {
@@ -155,5 +157,4 @@ void loop() {
 
   // heater is off
   displayWave();
-  
 }
